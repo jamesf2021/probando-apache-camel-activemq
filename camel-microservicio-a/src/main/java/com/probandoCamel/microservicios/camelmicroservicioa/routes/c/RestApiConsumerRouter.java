@@ -4,7 +4,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
 //@Component
-public class ActiveMqSenderRouter extends RouteBuilder {
+public class RestApiConsumerRouter extends RouteBuilder {
 
   @Override
   public void configure() throws Exception {
@@ -17,6 +17,13 @@ public class ActiveMqSenderRouter extends RouteBuilder {
 
     //from("file:files/json").log("${body}").to("activemq:mi-activemq-cola");
 
-    from("file:files/xml").log("${body}").to("activemq:mi-activemq-xml-cola");
+    restConfiguration().host("localhost").port(8000);
+
+    from("timer:rest-api-consumer?period=10000")
+        .setHeader("from", () -> "EUR")
+        .setHeader("to", () -> "INR")
+        .log("${body}")
+        .to("rest:get:/cambi-actual/from/{from}/to/{to}")
+        .log("${body}");
   }
 }
