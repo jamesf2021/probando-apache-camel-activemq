@@ -25,10 +25,12 @@ public class ActiveMqReceiverRouter extends RouteBuilder {
     .bean(miCambioActualProcessor)
     .bean(miCambioActualTransformer)
     .to("log:mensaje-recivido-de-active-mq");*/
-    from("activemq:mi-activemq-xml-cola")
-        .unmarshal()
-        .jacksonxml(CambioActual.class)
-        .to("log:mensaje-recivido-de-active-mq");
+    /* from("activemq:mi-activemq-xml-cola")
+    .unmarshal()
+    .jacksonxml(CambioActual.class)
+    .to("log:mensaje-recivido-de-active-mq");*/
+
+    from("activemq:split-cola").to("log:mensaje-recivido-de-active-mq");
   }
 }
 

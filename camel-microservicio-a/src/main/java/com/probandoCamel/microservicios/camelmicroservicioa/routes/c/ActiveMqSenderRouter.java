@@ -1,7 +1,6 @@
 package com.probandoCamel.microservicios.camelmicroservicioa.routes.c;
 
 import org.apache.camel.builder.RouteBuilder;
-import org.springframework.stereotype.Component;
 
 //@Component
 public class ActiveMqSenderRouter extends RouteBuilder {

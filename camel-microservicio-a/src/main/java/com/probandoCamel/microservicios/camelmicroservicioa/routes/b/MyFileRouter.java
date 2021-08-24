@@ -11,19 +11,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class MyFileRouter extends RouteBuilder {
 
   @Autowired private DeciderBean deciderBean;
 
   @Override
   public void configure() throws Exception {
+
+    // Patron Pipeline
+
     from("file:files/input")
+        //.pipeline()
         .routeId("Files-Input-Route")
         .transform()
         .body(String.class)
         // Condicional
-        .choice()
+        .choice() // Content based routing
         .when(simple("${file:ext} == 'xml'"))
         .log("XML FILE")
         //.when(simple("${body} contains 'USD'"))
